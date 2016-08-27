@@ -11,7 +11,7 @@ import java.time.temporal.ChronoUnit
 
 class LimitCombinationTest extends Specification {
 
-    def "test all combination"() {
+    def "test max price combination"() {
         def client = "client"
         def service = "service"
         def day = LocalDate.now()
