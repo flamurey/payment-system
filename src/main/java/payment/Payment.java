@@ -22,32 +22,16 @@ public class Payment {
         return price;
     }
 
-    public void setPrice(long price) {
-        this.price = price;
-    }
-
     public String getClient() {
         return client;
-    }
-
-    public void setClient(String client) {
-        this.client = client;
     }
 
     public String getService() {
         return service;
     }
 
-    public void setService(String service) {
-        this.service = service;
-    }
-
     public LocalDateTime getTime() {
         return time;
-    }
-
-    public void setTime(LocalDateTime time) {
-        this.time = time;
     }
 
     public PaymentStatus getStatus() {
@@ -74,7 +58,11 @@ public class Payment {
     }
 
     public boolean isSameService(Payment other) {
-        return getService().equals(other.getService());
+        return this.service.equals(other.getService());
+    }
+
+    public boolean isSameClient(Payment other) {
+        return this.client.equals(other.getClient());
     }
 
     public boolean isBetweenTo(LocalTime from, LocalTime to) {

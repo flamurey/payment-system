@@ -9,9 +9,7 @@ import spock.lang.Specification
 import java.time.LocalDate
 import java.time.LocalTime
 
-class MaxPriceOnPeriodTest extends Specification {
-
-    @Shared limitFactory = new QuickPaymentLimitFactory()
+class MaxTotalPriceOnPeriodTest extends Specification {
 
     @Shared maxTotalPrice = 1000
     @Shared fromLimit = LocalTime.of(10, 0)
@@ -24,7 +22,7 @@ class MaxPriceOnPeriodTest extends Specification {
         def payment1 = new Payment(500, "client1", "service1", time)
         def payment2 = new Payment(price2, "client1", service2, time2)
 
-        def limit = limitFactory.createMaxPriceOnPeriodLimit(maxTotalPrice, fromLimit, toLimit)
+        def limit = ConfigurablePaymentLimit.createMaxPriceOnPeriodLimit(maxTotalPrice, fromLimit, toLimit)
         paymentSystem.addLimit(limit)
 
         when:

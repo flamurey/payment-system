@@ -2,9 +2,8 @@ package payment;
 
 import payment.limits.PaymentLimit;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public interface PaymentSystem {
     /**
@@ -25,14 +24,14 @@ public interface PaymentSystem {
 
 class DefaultPaymentSystem implements PaymentSystem {
 
-    private List<Payment> payments = new LinkedList<>();
+    private NavigableMap<LocalDateTime, Payment> payments = new TreeMap<>();
 
     private List<PaymentLimit> limits = new ArrayList<>();
 
     @Override
     public PaymentStatus acceptPayment(Payment payment) {
         boolean isExceeded = limits.stream().anyMatch(l -> l.isPaymentExceeded(payment, payments));
-        payments.add(payment);
+        payments.put(payment.getTime(), payment);
         payment.setStatus(isExceeded ? PaymentStatus.NEED_TO_CONFIRM : PaymentStatus.READY_TO_EXECUTE);
         return payment.getStatus();
     }
