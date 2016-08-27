@@ -6,8 +6,8 @@ import java.time.LocalDateTime
 
 class PaymentSystemTest extends Specification {
 
-    def paymentSystem = PaymentSystem.create();
-    def payment = new Payment(100000, "client1", "service1", LocalDateTime.now());
+    def paymentSystem = PaymentSystem.create()
+    def payment = new Payment(100000, "client1", "service1", LocalDateTime.now())
     def exceededLimit = { p, payments -> true }
     def noExceededLimit = { p, payments -> false }
 

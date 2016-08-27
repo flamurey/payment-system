@@ -1,6 +1,7 @@
 package payment;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Payment {
     private long price;
@@ -66,5 +67,18 @@ public class Payment {
                 ", time=" + time +
                 ", status=" + status +
                 '}';
+    }
+
+    public boolean isSameDay(Payment other) {
+        return getTime().toLocalDate().equals(other.getTime().toLocalDate());
+    }
+
+    public boolean isSameService(Payment other) {
+        return getService().equals(other.getService());
+    }
+
+    public boolean isBetweenTo(LocalTime from, LocalTime to) {
+        LocalTime time = this.time.toLocalTime();
+        return time.compareTo(from) >= 0 && time.isBefore(to);
     }
 }
