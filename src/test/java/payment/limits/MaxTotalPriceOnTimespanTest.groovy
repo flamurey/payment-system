@@ -14,7 +14,7 @@ class MaxTotalPriceOnTimespanTest extends Specification {
     @Shared day = LocalDate.of(2000, 1, 1)
     @Shared time = day.atTime(11, 0)
 
-    def "payment belonging to period and exceeded max price must have NEED_TO_CONFIRM status"() {
+    def "if total price for given interval exceed max price then status must be NEED_TO_CONFIRM"() {
         def paymentSystem = PaymentSystem.create()
         def payment1 = new Payment(500, "client1", "service1", time)
         def payment2 = new Payment(price2, "client1", service2, time2)

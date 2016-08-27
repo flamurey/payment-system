@@ -3,7 +3,7 @@ package payment;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class Payment {
+public class Payment{
     private long price;
     private String client;
     private String service;
@@ -68,5 +68,9 @@ public class Payment {
     public boolean isBetweenTo(LocalTime from, LocalTime to) {
         LocalTime time = this.time.toLocalTime();
         return time.compareTo(from) >= 0 && time.isBefore(to);
+    }
+
+    public boolean isBetweenTo(LocalDateTime from, LocalDateTime to) {
+        return this.time.compareTo(from) >= 0 && this.time.isBefore(to);
     }
 }

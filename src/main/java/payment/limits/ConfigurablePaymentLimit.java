@@ -6,9 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Collection;
-import java.util.LongSummaryStatistics;
-import java.util.NavigableMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ConfigurablePaymentLimit implements PaymentLimit {
@@ -22,27 +20,27 @@ public class ConfigurablePaymentLimit implements PaymentLimit {
     private boolean sameService;
 
     @Override
-    public boolean isPaymentExceeded(Payment payment, NavigableMap<LocalDateTime, Payment> registeredPayments) {
-        Collection<Payment> fetchedByTimePayments;
-
+    public boolean isPaymentExceeded(Payment payment, Collection<Payment> registeredPayments) {
+        LocalDateTime fromDt;
+        LocalDateTime toDt;
         if (from != null && to != null) {
             if (!payment.isBetweenTo(from, to)) {
                 return false;
             } else {
                 LocalDate paymentDay = payment.getTime().toLocalDate();
-                LocalDateTime fromDt = paymentDay.atTime(from);
-                LocalDateTime toDt = paymentDay.atTime(to);
-                fetchedByTimePayments = registeredPayments.subMap(fromDt, true, toDt, false).values();
+                fromDt = paymentDay.atTime(from);
+                toDt = paymentDay.atTime(to);
             }
         } else {
             if (timespanUnit == null) {
                 throw new IllegalStateException("Either from and to fields or timespanUnit field must be initialized");
             }
-            LocalDateTime fromDt = payment.getTime().minus(timespanLength, timespanUnit);
-            fetchedByTimePayments = registeredPayments.subMap(fromDt, true, payment.getTime(), false).values();
+            fromDt = payment.getTime().minus(timespanLength, timespanUnit);
+            toDt = payment.getTime();
         }
 
-        LongSummaryStatistics statistics = fetchedByTimePayments.stream()
+        LongSummaryStatistics statistics = registeredPayments.stream()
+                .filter(p -> p.isBetweenTo(fromDt, toDt))
                 .filter(p -> {
                     boolean clientFilter = !sameClient || p.isSameClient(payment);
                     boolean serviceFilter = !sameService || p.isSameService(payment);
@@ -65,6 +63,14 @@ public class ConfigurablePaymentLimit implements PaymentLimit {
         ConfigurablePaymentLimit.Builder builder = new Builder(timeUnit, timespanLength);
         return builder.setMaxTotalPrice(maxTotalPrice)
                 .setSameServiceRestriction(true)
+                .build();
+    }
+
+    public static PaymentLimit createMaxCountOnDayLimit(long maxTotalCount) {
+        ConfigurablePaymentLimit.Builder builder = new Builder(LocalTime.MIDNIGHT, LocalTime.MAX);
+        return builder.setMaxTotalCount(maxTotalCount)
+                .setSameServiceRestriction(true)
+                .setSameClientRestriction(true)
                 .build();
     }
 
