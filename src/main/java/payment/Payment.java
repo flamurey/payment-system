@@ -53,10 +53,6 @@ public class Payment{
                 '}';
     }
 
-    public boolean isSameDay(Payment other) {
-        return getTime().toLocalDate().equals(other.getTime().toLocalDate());
-    }
-
     public boolean isSameService(Payment other) {
         return this.service.equals(other.getService());
     }
@@ -67,10 +63,10 @@ public class Payment{
 
     public boolean isBetweenTo(LocalTime from, LocalTime to) {
         LocalTime time = this.time.toLocalTime();
-        return time.compareTo(from) >= 0 && time.isBefore(to);
+        return time.compareTo(from) >= 0 && time.compareTo(to) <= 0;
     }
 
     public boolean isBetweenTo(LocalDateTime from, LocalDateTime to) {
-        return this.time.compareTo(from) >= 0 && this.time.isBefore(to);
+        return this.time.compareTo(from) >= 0 && time.compareTo(to) <= 0;
     }
 }

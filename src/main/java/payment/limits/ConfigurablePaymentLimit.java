@@ -74,6 +74,14 @@ public class ConfigurablePaymentLimit implements PaymentLimit {
                 .build();
     }
 
+    public static PaymentLimit createComplexLimit(long maxTotalPrice, long maxTotalCount, ChronoUnit timeUnit, long timespanLength) {
+        ConfigurablePaymentLimit.Builder builder = new Builder(timeUnit, timespanLength);
+        return builder.setMaxTotalCount(maxTotalCount)
+                .setMaxTotalPrice(maxTotalPrice)
+                .setSameClientRestriction(true)
+                .build();
+    }
+
     public static class Builder {
         private LocalTime from;
         private LocalTime to;

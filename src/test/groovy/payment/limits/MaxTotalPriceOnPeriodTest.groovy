@@ -39,8 +39,8 @@ class MaxTotalPriceOnPeriodTest extends Specification {
         501    | time                                  | "ser2"     || PaymentStatus.READY_TO_EXECUTE
         501    | day.atTime(fromLimit)                 | "service1" || PaymentStatus.NEED_TO_CONFIRM
         501    | day.atTime(fromLimit.minusMinutes(1)) | "service1" || PaymentStatus.READY_TO_EXECUTE
-        501    | day.atTime(toLimit)                   | "service1" || PaymentStatus.READY_TO_EXECUTE
-        501    | day.atTime(toLimit.minusMinutes(1))   | "service1" || PaymentStatus.NEED_TO_CONFIRM
+        501    | day.atTime(toLimit)                   | "service1" || PaymentStatus.NEED_TO_CONFIRM
+        501    | day.atTime(toLimit.plusMinutes(1))    | "service1" || PaymentStatus.READY_TO_EXECUTE
         1501   | time                                  | "ser2"     || PaymentStatus.NEED_TO_CONFIRM
     }
 }
