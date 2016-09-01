@@ -1,8 +1,8 @@
 package payment.limits
 
+import payment.DefaultPaymentSystem
 import payment.Payment
 import payment.PaymentStatus
-import payment.PaymentSystem
 import spock.lang.Specification
 
 import java.time.LocalDate
@@ -13,8 +13,8 @@ class ComplexLimitTest extends Specification {
     def time = day.atTime(11, 0)
     def client = "client1"
     def service = "service"
-    def limit = ConfigurablePaymentLimit.createComplexLimit(1000, 2, ChronoUnit.HOURS, 2)
-    def paymentSystem = PaymentSystem.create()
+    def limit = new ComplexPaymentLimit(1000, 2, ChronoUnit.HOURS, 2)
+    def paymentSystem = new DefaultPaymentSystem()
 
     def setup() {
         paymentSystem.addLimit(limit)

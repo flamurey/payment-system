@@ -1,8 +1,8 @@
 package payment.limits
 
+import payment.DefaultPaymentSystem
 import payment.Payment
 import payment.PaymentStatus
-import payment.PaymentSystem
 import spock.lang.Specification
 
 import java.time.LocalDate
@@ -15,9 +15,9 @@ class LimitCombinationTest extends Specification {
         def client = "client"
         def service = "service"
         def day = LocalDate.now()
-        def paypal = PaymentSystem.create()
-        paypal.addLimit(ConfigurablePaymentLimit.createMaxPriceOnPeriodLimit(5000, LocalTime.of(9, 0), LocalTime.of(23, 0)))
-        paypal.addLimit(ConfigurablePaymentLimit.createMaxPriceOnTimespanLimit(3000, ChronoUnit.HOURS, 1))
+        def paypal = new DefaultPaymentSystem()
+        paypal.addLimit(new MaxPriceOnPeriodLimit(5000, LocalTime.of(9, 0), LocalTime.of(23, 0)))
+        paypal.addLimit(new MaxPriceOnTimespanLimit(3000, ChronoUnit.HOURS, 1))
 
         when:
         def status = paypal.acceptPayment(new Payment(2000, client, service, day.atTime(10, 0)))

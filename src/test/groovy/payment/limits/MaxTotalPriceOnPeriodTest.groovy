@@ -1,5 +1,6 @@
 package payment.limits
 
+import payment.DefaultPaymentSystem
 import payment.Payment
 import payment.PaymentStatus
 import payment.PaymentSystem
@@ -18,11 +19,11 @@ class MaxTotalPriceOnPeriodTest extends Specification {
     @Shared time = day.atTime(11, 0)
 
     def "payment belonging to period and exceeded total max price must have NEED_TO_CONFIRM status"() {
-        def paymentSystem = PaymentSystem.create()
+        def paymentSystem = new DefaultPaymentSystem()
         def payment1 = new Payment(500, "client1", "service1", time)
         def payment2 = new Payment(price2, "client1", service2, time2)
 
-        def limit = ConfigurablePaymentLimit.createMaxPriceOnPeriodLimit(maxTotalPrice, fromLimit, toLimit)
+        def limit = new MaxPriceOnPeriodLimit(maxTotalPrice, fromLimit, toLimit)
         paymentSystem.addLimit(limit)
 
         when:

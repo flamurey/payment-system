@@ -1,5 +1,6 @@
 package payment.limits
 
+import payment.DefaultPaymentSystem
 import payment.Payment
 import payment.PaymentStatus
 import payment.PaymentSystem
@@ -15,11 +16,11 @@ class MaxCountOnDayLimitTest extends Specification {
 
     def "if total count of payments for given interval exceed max count then status must be NEED_TO_CONFIRM"() {
 
-        def paymentSystem = PaymentSystem.create()
+        def paymentSystem = new DefaultPaymentSystem()
         def payment = new Payment(500, client, service, time)
         def maxCount = 10
 
-        def limit = ConfigurablePaymentLimit.createMaxCountOnDayLimit(maxCount)
+        def limit = new MaxCountOnDayLimit(maxCount)
         paymentSystem.addLimit(limit)
 
         when: "add max count payments "

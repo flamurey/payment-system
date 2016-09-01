@@ -1,5 +1,6 @@
 package payment.limits
 
+import payment.DefaultPaymentSystem
 import payment.Payment
 import payment.PaymentStatus
 import payment.PaymentSystem
@@ -15,11 +16,11 @@ class MaxTotalPriceOnTimespanTest extends Specification {
     @Shared time = day.atTime(11, 0)
 
     def "if total price for given interval exceed max price then status must be NEED_TO_CONFIRM"() {
-        def paymentSystem = PaymentSystem.create()
+        def paymentSystem = new DefaultPaymentSystem()
         def payment1 = new Payment(500, "client1", "service1", time)
         def payment2 = new Payment(price2, "client1", service2, time2)
 
-        def limit = ConfigurablePaymentLimit.createMaxPriceOnTimespanLimit(maxTotalPrice, ChronoUnit.MINUTES, 60)
+        def limit = new MaxPriceOnTimespanLimit(maxTotalPrice, ChronoUnit.MINUTES, 60)
         paymentSystem.addLimit(limit)
 
         when:

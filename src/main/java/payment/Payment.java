@@ -67,6 +67,6 @@ public class Payment{
     }
 
     public boolean isBetweenTo(LocalDateTime from, LocalDateTime to) {
-        return this.time.compareTo(from) >= 0 && time.compareTo(to) <= 0;
+        return time.compareTo(from) >= 0 && time.compareTo(to) <= 0;
     }
 }
